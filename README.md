@@ -1,3 +1,3 @@
 # ThingCast
 
-A simple event scheduler
+Event Scheduler for Business and Content Creators
