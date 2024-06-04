@@ -1,12 +1,10 @@
-"use client";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import { TaskTable } from "./task-table";
-import { FormContent } from "@/utils/form-content";
-import { formIndex } from "@/utils/form_utils";
+import { FormContent } from "@/components/layout/form-content";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -22,22 +20,6 @@ import {
 // 5 ---- Draft Personalized message to send to the people & Save
 
 export function Content() {
-  const [currentStep, setCurrentStep] = useState(0);
-  const formContent = FormContent();
-
-  const handleNext = () => {
-    if (currentStep < formIndex.length - 1) {
-      setCurrentStep((prev) => prev + 1); // setting the current step to the next value
-    } else {
-      console.log("submit");
-    }
-  };
-  const handlePrevious = () => {
-    if (currentStep > 0) {
-      setCurrentStep((prev) => prev - 1); // setting the current step to the previous value
-    }
-  };
-
   return (
     <div id="content" className="w-full p-4">
       <div id="--top--bar" className="flex items-center gap-5">
@@ -58,23 +40,24 @@ export function Content() {
                 Enter the details of your schedule and click save.
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4">{formContent[currentStep]}</div>
+            <div className="flex h-full max-h-[70vh] flex-col gap-5 overflow-y-auto py-4">
+              <FormContent />
+            </div>
             <DialogFooter>
-              {currentStep > 0 && (
+              <DialogClose asChild>
                 <Button
                   variant={"outline"}
                   className="border-slate-600 bg-transparent text-white hover:border-slate-400 hover:bg-transparent hover:text-white"
-                  onClick={handlePrevious}
                 >
-                  Back
+                  Close
                 </Button>
-              )}
+              </DialogClose>
+
               <Button
                 variant="default"
                 className="bg-indigo-600 hover:bg-indigo-700"
-                onClick={handleNext}
               >
-                {currentStep < formIndex.length - 1 ? "Continue" : "Save"}
+                Save
               </Button>
             </DialogFooter>
           </DialogContent>
