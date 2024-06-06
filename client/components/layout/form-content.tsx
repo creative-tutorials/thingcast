@@ -1,13 +1,11 @@
-"use client";
-import { Fragment, useState } from "react";
-import { FormData } from "@/utils/form_utils";
+import { Dispatch, SetStateAction } from "react";
+import { FormSchema } from "@/utils/form_utils";
 import { timeSnippet } from "@/utils/timeSnippets";
 import { apps } from "../../utils/apputils";
 import { addDays, format } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
-import { Trash2, UsersRound } from "lucide-react";
 import { CalendarDays as CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,35 +23,19 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 
-export function FormContent() {
-  const [date, setDate] = useState<Date>();
-  const [time, setTime] = useState<string>("10:00");
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(-1);
-  const [inviteArray, setInviteArray] = useState<string[]>([]);
-  const [formData, setFormData] = useState<FormData>({
-    task: "",
-    app: "",
-    email: "",
-    message: "",
-  });
+type FormContentProps = {
+  fData: FormSchema;
+  setFData: Dispatch<SetStateAction<FormSchema>>;
+  date: Date | undefined;
+  setDate: Dispatch<SetStateAction<Date | undefined>>;
+  time: string;
+  setTime: Dispatch<SetStateAction<string>>;
+};
 
-  const parseInvites = (event: { target: { value: string } }) => {
-    const emailValue = event.target.value;
-    const emailArray = emailValue.split(",");
-    setFormData((prev) => ({ ...prev, email: emailValue }));
+export function FormContent(props: FormContentProps) {
+  const { fData, setFData, date, setDate, time, setTime } = props;
 
-    if (emailValue.endsWith(",")) {
-      const invites = emailArray.filter(Boolean); // remove empty strings
-      invites.forEach((invite) => {
-        inviteArray.push(invite.trim()); // remove whitespace
-      });
-
-      // clear the input field
-      setFormData((prev) => ({ ...prev, email: "" }));
-    }
-  };
-
-  const validateAndUpdate = (event: { target: { value: string } }) => {
+  const updateTime = (event: { target: { value: string } }) => {
     const timeValue = event.target.value;
     const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
     const inputElement = event.target as HTMLInputElement;
@@ -70,7 +52,8 @@ export function FormContent() {
       inputElement.setAttribute("data-status", "invalid");
     }
   };
-  const updateTimeInput = (value: string) => {
+
+  const changeTimeOnSelect = (value: string) => {
     setTime(value);
     const inputElement = document.getElementById("time") as HTMLInputElement;
     inputElement.removeAttribute("data-status");
@@ -78,19 +61,35 @@ export function FormContent() {
   //
   return (
     <>
-      {/* // step 1 = title of the event */}
-      <div className="" key={"step-1"}>
-        <div id="fields" className="flex flex-col gap-4">
-          <Label htmlFor="name" className="text-white">
-            Event Name
+      <div id="og-title">
+        <div id="fields" className="flex flex-col gap-2">
+          <Label htmlFor="tltle" className="text-white">
+            Title
           </Label>
-          <div id="name-input">
+          <div id="title-input">
             <Input
-              id="name"
-              placeholder="Playing Fortnite"
-              value={formData.task}
+              id="title"
+              placeholder="Streaming with Theo"
+              value={fData.title}
+              onChange={(e) => setFData({ ...fData, title: e.target.value })}
+              className="col-span-3 border-zinc-800 bg-zinc-950 text-white focus:border-indigo-300 focus:ring-offset-indigo-500"
+              autoComplete="off"
+            />
+          </div>
+        </div>
+      </div>
+      <div id="og-description">
+        <div id="fields" className="flex flex-col gap-2">
+          <Label htmlFor="description" className="text-white">
+            Draft Message
+          </Label>
+          <div id="description-input" className="flex flex-col gap-2">
+            <Textarea
+              id="description"
+              placeholder="Tell your audience what you're going to do"
+              value={fData.description}
               onChange={(e) =>
-                setFormData({ ...formData, task: e.target.value })
+                setFData({ ...fData, description: e.target.value })
               }
               className="col-span-3 border-zinc-800 bg-zinc-950 text-white focus:border-indigo-300 focus:ring-offset-indigo-500"
               autoComplete="off"
@@ -98,93 +97,57 @@ export function FormContent() {
           </div>
         </div>
       </div>
-      {/* // step 2 = select the app to use */}
-      <div className="flex flex-col gap-4" key={"step-2"}>
-        <h2 className="text-xl font-bold text-white">Apps</h2>
-        <div id="apps" className="grid grid-cols-3 gap-4">
-          {apps.map((app, index) => (
-            <Fragment key={index}>
-              <div
-                key={app.id}
-                id="app"
-                data-app={app.id === formData.app ? "selected" : ""}
-                className="flex cursor-pointer flex-col items-center rounded-md bg-transparent transition-all hover:bg-slate-700/30 data-[app=selected]:bg-slate-700/30"
-                onClick={() => setFormData({ ...formData, app: app.id })}
-              >
-                <div id="icon">{app.icon}</div>
-                <hgroup id="text-content">
-                  <p className="text-white">{app.text}</p>
-                </hgroup>
-              </div>
-            </Fragment>
-          ))}
+      <div id="og-app">
+        <div id="app-field" className="flex flex-col gap-2">
+          <Label className="text-white">Apps</Label>
+          <div id="apps">
+            <Select
+              onValueChange={(value) => setFData({ ...fData, app: value })}
+            >
+              <SelectTrigger className="w-full rounded-lg border border-slate-700 bg-primary-hover-primary text-white focus:border-indigo-300 focus:ring-offset-indigo-500">
+                <SelectValue placeholder="Select an app" />
+              </SelectTrigger>
+              <SelectContent className="rounded-lg border border-slate-600 bg-primary-primaryBG text-white">
+                <SelectGroup className="">
+                  {apps.map((app, index) => (
+                    <SelectItem
+                      key={index}
+                      className="focus:bg-indigo-700 focus:text-white focus:shadow-md"
+                      value={app.text}
+                    >
+                      <div id="wrap" className="flex items-center gap-2">
+                        <div id="icon">{app.icon}</div>
+                        <div id="text">{app.text}</div>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
-      {/* // step 3 = selecting people to invite */}
-      <div className="flex flex-col gap-4" key={"step-3"}>
+      <div id="og-invite">
         <div id="fields" className="flex flex-col gap-4">
-          <Label htmlFor="email-invite" className="text-white">
+          <Label htmlFor="meeting-link" className="text-white">
             Invite People
           </Label>
           <div id="invite-input" className="flex flex-col gap-2">
             <Input
-              id="email-invite"
-              placeholder="john@gmail.com"
-              value={formData.email}
-              onChange={parseInvites}
+              id="meeting-link"
+              placeholder="zoom.us/join/xxxxxxxxxx"
+              type="text"
+              value={fData.url}
               className="col-span-3 border-zinc-800 bg-zinc-950 text-white focus:border-indigo-300 focus:ring-offset-indigo-500"
               autoComplete="off"
             />
             <p className="text-sm text-muted-foreground">
-              Enter the email addresses of the people you want to invite to the
-              event.
+              Add a link to the meeting you want to invite people to.
             </p>
           </div>
         </div>
-        <div
-          id="email-tags"
-          className="grid h-full w-full grid-cols-3 gap-4 data-[display=hide]:hidden"
-          data-display={inviteArray.length > 0 ? "show" : "hide"}
-        >
-          {inviteArray.map((invite, index) => (
-            <div
-              key={index}
-              id="tag"
-              className="group flex w-full cursor-pointer items-center gap-1 overflow-hidden rounded-lg border border-zinc-600 bg-[hsl(224,10%,21%)] p-2 shadow-inner transition-all hover:border-transparent hover:bg-red-600"
-              // if mouse enter change the text to "Delete email?"
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              onClick={() => {
-                setInviteArray(inviteArray.filter((i) => i !== invite)); // remove the invite from the array and update the state
-                setFormData((prev) => ({ ...prev, email: "" }));
-                setHoveredIndex(null);
-              }}
-            >
-              <div
-                id="tag-icon"
-                className="transition-all group-hover:hidden"
-                data-icon="users"
-              >
-                <UsersRound className="h-4 w-4 text-white" />
-              </div>
-              <div
-                id="tag-icon"
-                className="relative hidden transition-all group-hover:block"
-                data-icon="trash"
-              >
-                <Trash2 className="h-4 w-4 text-white" />
-              </div>
-              <div id="tag-text">
-                <p className="text-sm text-white transition-all group-hover:text-red-200">
-                  {hoveredIndex === index ? "Delete email?" : invite}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
-      {/* // step 4 = select time and date for the event */}
-      <div className="" key={"step-4"}>
+      <div>
         <div id="fields" className="flex flex-col gap-4">
           <Label className="text-white">
             Select the time and date for the event
@@ -270,7 +233,7 @@ export function FormContent() {
                   type="text"
                   placeholder="12:00"
                   value={time}
-                  onChange={validateAndUpdate}
+                  onChange={updateTime}
                   data-status="valid"
                   id="time"
                   className="col-span-3 appearance-none border-zinc-800 bg-zinc-950 text-white focus:border-indigo-300 focus:ring-offset-indigo-500 data-[status=invalid]:border-red-600 data-[status=invalid]:bg-red-600/30 data-[status=invalid]:ring-offset-red-600 data-[status=invalid]:placeholder:text-red-300 data-[status=invalid]:focus:border-red-600"
@@ -278,7 +241,7 @@ export function FormContent() {
               </PopoverTrigger>
               <PopoverContent className="rounded-2xl border border-slate-600 bg-primary-primaryBG p-4">
                 <div className="" id="time-picker">
-                  <Select onValueChange={updateTimeInput}>
+                  <Select onValueChange={changeTimeOnSelect}>
                     <SelectTrigger className="w-full rounded-lg border border-slate-700 bg-primary-hover-primary text-white focus:border-indigo-300 focus:ring-offset-indigo-500">
                       <SelectValue placeholder={time} />
                     </SelectTrigger>
@@ -302,29 +265,6 @@ export function FormContent() {
                 </div>
               </PopoverContent>
             </Popover>
-          </div>
-        </div>
-      </div>
-      {/* // step 5 = draft message */}
-      <div className="" key={"step-5"}>
-        <div id="fields" className="flex flex-col gap-4">
-          <Label htmlFor="message" className="text-white">
-            Draft Message
-          </Label>
-          <div id="message-input" className="flex flex-col gap-2">
-            <Textarea
-              id="message"
-              placeholder="Enter an exciting message for this event"
-              value={formData.message}
-              onChange={(e) =>
-                setFormData({ ...formData, message: e.target.value })
-              }
-              className="col-span-3 border-zinc-800 bg-zinc-950 text-white focus:border-indigo-300 focus:ring-offset-indigo-500"
-              autoComplete="off"
-            />
-            <p className="text-sm text-muted-foreground">
-              Your message will be sent to the people you have selected.
-            </p>
           </div>
         </div>
       </div>

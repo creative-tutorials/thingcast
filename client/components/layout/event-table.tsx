@@ -43,51 +43,62 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const data: TaskType[] = [
+const data: EventType[] = [
   {
-    id: "m5gr84i9",
-    service: "Twitch",
-    taskName: "Create a new stream",
-    status: "in-progress",
-    date: "2022-01-01",
-    time: "10:00",
+    eventID: "m5gr84i9",
+    event: "Twitch",
+    app: "Twitch",
+    invites: ["https://twitch.tv/invite/xxxxxxxxxx"],
+    createdAt: "2022-01-01",
   },
   {
-    id: "3u1reuv4",
-    service: "YouTube",
-    taskName: "Create a new video",
-    status: "not-started",
-    date: "2022-01-01",
-    time: "10:00",
+    eventID: "3u1reuv4",
+    event: "YouTube",
+    app: "YouTube",
+    invites: ["https://www.youtube.com/watch?v=xxxxxxxxxx"],
+    createdAt: "2022-01-01",
   },
   {
-    id: "derv1ws0",
-    service: "Teams",
-    taskName: "Create a new meeting",
-    status: "in-progress",
-    date: "2022-01-01",
-    time: "10:00",
+    eventID: "derv1ws0",
+    event: "Teams",
+    app: "Teams",
+    invites: ["https://teams.microsoft.com/l/meetup-join/xxxxxxxxxx"],
+    createdAt: "2022-01-01",
   },
   {
-    id: "5kma53ae",
-    service: "Twitch",
-    taskName: "Create a second new stream",
-    status: "done",
-    date: "2022-01-01",
-    time: "10:00",
+    eventID: "5kma53ae",
+    event: "Twitch",
+    app: "Twitch",
+    invites: ["https://twitch.tv/invite/xxxxxxxxxx"],
+    createdAt: "2022-01-01",
+  },
+  {
+    eventID: "5kma53ae",
+    event: "Twitch",
+    app: "Twitch",
+    invites: ["https://twitch.tv/invite/xxxxxxxxxx"],
+    createdAt: "2022-01-01",
+  },
+  {
+    eventID: "5kma53ae",
+    event: "Twitch",
+    app: "Twitch",
+    invites: ["https://twitch.tv/invite/xxxxxxxxxx"],
+    createdAt: "2022-01-01",
   },
 ];
 
-export type TaskType = {
-  id: string;
-  service: string;
-  taskName: string;
-  status: "not-started" | "in-progress" | "done";
-  date: string;
-  time: string;
+export type EventType = {
+  eventID: string;
+  event: string;
+  app: string;
+  invites: string[];
+  createdAt: string;
 };
 
-export const columns: ColumnDef<TaskType>[] = [
+// "eventID", "event", "app", "message", "invites", "createdAt"
+
+export const columns: ColumnDef<EventType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -96,7 +107,7 @@ export const columns: ColumnDef<TaskType>[] = [
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
-        className="data-[state=checked]:bg-indigo-500 bg-transparent border-zinc-700 data-[state=checked]:border-transparent"
+        className="border-zinc-700 bg-transparent data-[state=checked]:border-transparent data-[state=checked]:bg-indigo-500"
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
@@ -104,7 +115,7 @@ export const columns: ColumnDef<TaskType>[] = [
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
-        className="border-zinc-800 group-data-[state=selected]:bg-indigo-500 group-data-[state=selected]:border-transparent"
+        className="border-zinc-800 group-data-[state=selected]:border-transparent group-data-[state=selected]:bg-indigo-500"
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
       />
@@ -113,40 +124,28 @@ export const columns: ColumnDef<TaskType>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "service",
-    header: "Service",
+    accessorKey: "eventID",
+    header: "id",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("service")}</div>
+      <div className="capitalize">{row.getValue("eventID")}</div>
     ),
   },
   {
-    accessorKey: "taskName",
-    header: "Task",
+    accessorKey: "event",
+    header: "event",
+    cell: ({ row }) => <div className="lowercase">{row.getValue("event")}</div>,
+  },
+  {
+    accessorKey: "app",
+    header: "app",
+    cell: ({ row }) => <div className="lowercase">{row.getValue("app")}</div>,
+  },
+  {
+    accessorKey: "createdAt",
+    header: "createdAt",
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("taskName")}</div>
+      <div className="lowercase">{row.getValue("createdAt")}</div>
     ),
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div
-        className="lowercase data-[status=not-started]:bg-amber-800 data-[status=not-started]:text-amber-300 data-[status=in-progress]:bg-blue-800 data-[status=in-progress]:text-blue-300 data-[status=done]:bg-green-800 data-[status=done]:text-green-300 rounded-full p-1 text-center w-24"
-        data-status={row.getValue("status")}
-      >
-        {row.getValue("status")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "time",
-    header: "Time",
-    cell: ({ row }) => <div className="lowercase">{row.getValue("time")}</div>,
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-    cell: ({ row }) => <div className="lowercase">{row.getValue("date")}</div>,
   },
   {
     id: "actions",
@@ -159,7 +158,7 @@ export const columns: ColumnDef<TaskType>[] = [
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="h-8 w-8 p-0 hover:bg-zinc-950 border border-zinc-800"
+              className="h-8 w-8 border border-zinc-800 p-0 hover:bg-zinc-950"
             >
               <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4 text-white" />
@@ -167,23 +166,23 @@ export const columns: ColumnDef<TaskType>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="bg-zinc-950 border-zinc-900"
+            className="border-zinc-900 bg-zinc-950"
           >
             <DropdownMenuLabel className="text-white">
               Actions
             </DropdownMenuLabel>
             <DropdownMenuItem
-              className="text-white focus:bg-zinc-900 focus:text-slate-50 flex items-center gap-1"
-              onClick={() => navigator.clipboard.writeText(task.id)}
+              className="flex items-center gap-1 text-white focus:bg-zinc-900 focus:text-slate-50"
+              onClick={() => navigator.clipboard.writeText(task.eventID)}
             >
-              <Copy className="h-4 w-4" /> Copy task ID
+              <Copy className="h-4 w-4" /> Copy ID
             </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-zinc-800" />
-            <DropdownMenuItem className="text-white focus:bg-zinc-900 focus:text-slate-50 flex items-center gap-1">
+            <DropdownMenuItem className="flex items-center gap-1 text-white focus:bg-zinc-900 focus:text-slate-50">
               <Forward className="h-4 w-4" /> Share Invite
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-[#ee7777] focus:bg-red-700 focus:text-red-200 flex items-center gap-1">
-              <Trash2 className="h-4 w-4" /> Delete Task
+            <DropdownMenuItem className="flex items-center gap-1 text-[#ee7777] focus:bg-red-700 focus:text-red-200">
+              <Trash2 className="h-4 w-4" /> Delete Event
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -192,12 +191,11 @@ export const columns: ColumnDef<TaskType>[] = [
   },
 ];
 
-export function TaskTable() {
+export function EventTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    date: false,
-    time: false,
+    createdAt: false,
   });
   const [rowSelection, setRowSelection] = useState({});
 
@@ -224,25 +222,25 @@ export function TaskTable() {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter service..."
-          value={(table.getColumn("service")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter event..."
+          value={(table.getColumn("event")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("service")?.setFilterValue(event.target.value)
+            table.getColumn("event")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm bg-primary-hover-primary placeholder:text-white focus:ring-offset-indigo-500 border-zinc-900 text-slate-50"
+          className="max-w-sm border-zinc-900 bg-primary-hover-primary text-slate-50 placeholder:text-white focus:ring-offset-indigo-500"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="ml-auto bg-zinc-950 border-zinc-900 hover:bg-zinc-900 text-white hover:text-white"
+              className="ml-auto border-zinc-900 bg-zinc-950 text-white hover:bg-zinc-900 hover:text-white"
             >
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="bg-zinc-950 border-zinc-900"
+            className="border-zinc-900 bg-zinc-950"
           >
             {table
               .getAllColumns()
@@ -264,7 +262,7 @@ export function TaskTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border bg-secondary-secondaryBG border-zinc-900">
+      <div className="rounded-md border border-zinc-900 bg-secondary-secondaryBG">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -279,7 +277,7 @@ export function TaskTable() {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -293,7 +291,7 @@ export function TaskTable() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="group hover:bg-zinc-950 border-zinc-900 data-[state=selected]:bg-zinc-950 data-[state=selected]:shadow-md"
+                  className="group border-zinc-900 hover:bg-zinc-950 data-[state=selected]:bg-zinc-950 data-[state=selected]:shadow-md"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
@@ -302,7 +300,7 @@ export function TaskTable() {
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

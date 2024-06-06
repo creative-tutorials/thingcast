@@ -8,32 +8,32 @@ import { YoutubeIcon } from "@/components/layout/icons/youtube";
 export const apps = [
   {
     id: "meet",
-    icon: <GoogleMeet width={44} height={44} />,
+    icon: <GoogleMeet width={20} height={20} />,
     text: "Meet",
   },
   {
     id: "teams",
-    icon: <MicrosoftTeams width={44} height={44} />,
+    icon: <MicrosoftTeams width={20} height={20} />,
     text: "Teams",
   },
   {
     id: "slack",
-    icon: <Slack width={44} height={44} />,
+    icon: <Slack width={20} height={20} />,
     text: "Slack",
   },
   {
     id: "twitch",
-    icon: <TwitchAlt width={44} height={44} />,
+    icon: <TwitchAlt width={20} height={20} />,
     text: "Twitch",
   },
   {
     id: "zoom",
-    icon: <Zoom width={44} height={44} />,
+    icon: <Zoom width={20} height={20} />,
     text: "Zoom",
   },
   {
     id: "youtube",
-    icon: <YoutubeIcon width={44} height={44} />,
+    icon: <YoutubeIcon width={20} height={20} />,
     text: "YouTube",
   },
 ];

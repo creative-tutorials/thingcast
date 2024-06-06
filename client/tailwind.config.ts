@@ -29,6 +29,7 @@ const config = {
           foreground: "hsl(var(--primary-foreground))",
           primaryBG: "hsl(var(--primary-bg))",
           "hover-primary": "hsl(var(--hover-primary))",
+          tagbackground: "hsl(var(--tagbackground))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
