@@ -39,7 +39,7 @@ cd ThingCast
 2. **Install dependencies**:
 
 ```bash
-$ npm install
+bun install
 ```
 
 3. **Configure the environment variables**:
@@ -55,7 +55,7 @@ SECRET_KEY=your_secret_key
 4. **Start the application**:
 
 ```bash
-$ npm start
+bun dev
 ```
 
 5. **Access the application**:
