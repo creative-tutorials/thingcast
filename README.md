@@ -1,4 +1,12 @@
+<div align="center">
+
+[![img](/assets/thingcast-brand-f3.png)](https://github.com/crative-tutorials/thingcast)
+
 # ThingCast
+
+Simple event scheduling platform for businesses and content creators.
+
+</div>
 
 ## Event Scheduler for Business and Content Creators
 
