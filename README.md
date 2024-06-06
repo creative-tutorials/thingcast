@@ -32,7 +32,8 @@ Welcome to ThingCast, an advanced event scheduling platform designed specificall
 1. **Clone the repository**:
 
 ```bash
-git clone https://github.com/yourusername/ThingCast.git
+git clone https://github.com/creative-tutorials/thingcast.git
+
 cd ThingCast
 ```
 
