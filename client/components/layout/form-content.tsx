@@ -138,6 +138,7 @@ export function FormContent(props: FormContentProps) {
               placeholder="zoom.us/join/xxxxxxxxxx"
               type="text"
               value={fData.url}
+              onChange={(e) => setFData({ ...fData, url: e.target.value })}
               className="col-span-3 border-zinc-800 bg-zinc-950 text-white focus:border-indigo-300 focus:ring-offset-indigo-500"
               autoComplete="off"
             />

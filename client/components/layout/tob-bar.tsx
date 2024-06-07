@@ -20,6 +20,7 @@ import { useState } from "react";
 
 export function TopBar() {
   const { isSignedIn, isLoaded, userId } = useAuth();
+  const [isPending, setIsPending] = useState(false);
   const [formData, setFormData] = useState<FormSchema>({
     title: "",
     description: "",
@@ -30,44 +31,19 @@ export function TopBar() {
   const [time, setTime] = useState<string>("10:00");
   const queryClient = useQueryClient();
 
-  // const { isPending, isError, error, data } = useQuery({
-  //   queryKey: ["events"],
-  //   queryFn: () => getEvents(),
-  // });
-
-  // const getEvents = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost:8080/event", {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         userid: "test",
-  //       },
-  //     });
-
-  //     if (response.status === 200) {
-  //       return response.data;
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw error;
-  //   }
-  // };
-
-  // if (isError) {
-  //   console.error("error caught");
-  // }
-
   const createEvent = async () => {
     if (!isSignedIn && !isLoaded) return;
 
+    setIsPending(true);
     try {
       const response = await axios.post(
-        "http://localhost:8080/event",
+        "http://localhost:8080/events",
         {
           title: formData.title,
           description: formData.description,
           app: formData.app,
-          scheduled: `${date} ${time}`,
+          url: formData.url,
+          scheduled: `${date?.toDateString()} / ${time}`,
         },
         {
           headers: {
@@ -89,9 +65,23 @@ export function TopBar() {
   const mutation = useMutation({
     mutationFn: () => createEvent(),
     onSuccess: () => {
+      setIsPending(false);
       queryClient.invalidateQueries({ queryKey: ["events"] });
     },
+    onError: (err) => {
+      console.error(err);
+      // setError(err);
+    },
   });
+
+  const sData = {
+    title: formData.title,
+    description: formData.description,
+    app: formData.app,
+    url: formData.url,
+    // instead of using 6/30/2023 we can use Mon, Jun 30, 2023
+    scheduled: `${date?.toDateString()} / ${time}`,
+  };
 
   return (
     <div id="--top--bar" className="flex items-center gap-5">
@@ -134,10 +124,11 @@ export function TopBar() {
 
             <Button
               onClick={() => mutation.mutate()}
+              disabled={mutation.isPending}
               variant="default"
               className="bg-indigo-600 hover:bg-indigo-700"
             >
-              Save
+              {mutation.isPending ? "Saving..." : "Save"}
             </Button>
           </DialogFooter>
         </DialogContent>

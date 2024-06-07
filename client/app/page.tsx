@@ -1,12 +1,3 @@
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import {
-  LayoutDashboard,
-  LineChart,
-  ScrollText,
-  CalendarDays,
-  CirclePlus,
-} from "lucide-react";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Content } from "@/components/layout/content";
 

@@ -24,7 +24,7 @@ Welcome to ThingCast, an advanced event scheduling platform designed specificall
 
 ### Prerequisites
 
-- Node.js (version X.X.X or higher)
+- Node.js (version 20.14.0 or higher)
 - Xata (PostgreSQL database)
 
 ### Installation

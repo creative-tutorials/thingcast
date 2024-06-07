@@ -35,6 +35,7 @@ const config = {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
           secondaryBG: "hsl(var(--secondary-bg))",
+          hoversecondary: "hsl(var(--hover-seconday))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

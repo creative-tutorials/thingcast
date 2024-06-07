@@ -1,14 +1,16 @@
+import { SidebarFooter } from "./sidebar/footer";
 import {
   LayoutDashboard,
   LineChart,
   ScrollText,
   CalendarDays,
 } from "lucide-react";
+
 export function Sidebar() {
   return (
     <div
       id="sidebar"
-      className="w-full max-w-60 h-screen p-4 bg-transparent border-r border-neutral-600 flex flex-col gap-5"
+      className="flex h-screen w-full max-w-60 flex-col gap-5 border-r border-neutral-800 bg-transparent p-4"
     >
       <div id="--app--logo">
         <h3 className="text-xl font-bold text-white">
@@ -16,53 +18,46 @@ export function Sidebar() {
         </h3>
       </div>
       <div id="sidebar-menu">
-        <ul className="flex flex-col gap-5">
+        <ul className="flex flex-col gap-2">
           <li>
             <a
               href="#content"
-              className="group flex items-center gap-1 p-2 bg-transparent transition-all hover:bg-primary-hover-primary hover:px-3 text-white rounded-md hover:shadow-md"
+              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-white transition-all hover:bg-primary-hover-primary hover:shadow-md"
             >
-              <LayoutDashboard />{" "}
-              <span className="text-sm transition-all group-hover:text-base">
-                Dashboard
-              </span>
+              <LayoutDashboard width={20} height={20} />{" "}
+              <span className="text-sm transition-all">Dashboard</span>
             </a>
           </li>
           <li>
             <a
               href="#content"
-              className="group flex items-center gap-1 p-2 bg-transparent transition-all hover:bg-primary-hover-primary hover:px-3 text-white rounded-md hover:shadow-md"
+              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-white transition-all hover:bg-primary-hover-primary hover:shadow-md"
             >
-              <LineChart />{" "}
-              <span className="text-sm transition-all group-hover:text-base">
-                Analytics
-              </span>
+              <LineChart width={20} height={20} />{" "}
+              <span className="text-sm transition-all">Analytics</span>
             </a>
           </li>
           <li>
             <a
               href="#content"
-              className="group flex items-center gap-1 p-2 bg-transparent transition-all hover:bg-primary-hover-primary hover:px-3 text-white rounded-md hover:shadow-md"
+              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-white transition-all hover:bg-primary-hover-primary hover:shadow-md"
             >
-              <ScrollText />
-              <span className="text-sm transition-all group-hover:text-base">
-                Invoice
-              </span>
+              <ScrollText width={20} height={20} />
+              <span className="text-sm transition-all">Invoice</span>
             </a>
           </li>
           <li>
             <a
               href="#content"
-              className="group flex items-center gap-1 p-2 bg-transparent transition-all hover:bg-primary-hover-primary hover:px-3 text-white rounded-md hover:shadow-md"
+              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-white transition-all hover:bg-primary-hover-primary hover:shadow-md"
             >
-              <CalendarDays />
-              <span className="text-sm transition-all group-hover:text-base">
-                Schedule
-              </span>
+              <CalendarDays width={20} height={20} />
+              <span className="text-sm transition-all">Schedule</span>
             </a>
           </li>
         </ul>
       </div>
+      <SidebarFooter />
     </div>
   );
 }

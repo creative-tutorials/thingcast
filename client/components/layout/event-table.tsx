@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   ColumnDef,
@@ -43,60 +41,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const data: EventType[] = [
-  {
-    eventID: "m5gr84i9",
-    event: "Twitch",
-    app: "Twitch",
-    invites: ["https://twitch.tv/invite/xxxxxxxxxx"],
-    createdAt: "2022-01-01",
-  },
-  {
-    eventID: "3u1reuv4",
-    event: "YouTube",
-    app: "YouTube",
-    invites: ["https://www.youtube.com/watch?v=xxxxxxxxxx"],
-    createdAt: "2022-01-01",
-  },
-  {
-    eventID: "derv1ws0",
-    event: "Teams",
-    app: "Teams",
-    invites: ["https://teams.microsoft.com/l/meetup-join/xxxxxxxxxx"],
-    createdAt: "2022-01-01",
-  },
-  {
-    eventID: "5kma53ae",
-    event: "Twitch",
-    app: "Twitch",
-    invites: ["https://twitch.tv/invite/xxxxxxxxxx"],
-    createdAt: "2022-01-01",
-  },
-  {
-    eventID: "5kma53ae",
-    event: "Twitch",
-    app: "Twitch",
-    invites: ["https://twitch.tv/invite/xxxxxxxxxx"],
-    createdAt: "2022-01-01",
-  },
-  {
-    eventID: "5kma53ae",
-    event: "Twitch",
-    app: "Twitch",
-    invites: ["https://twitch.tv/invite/xxxxxxxxxx"],
-    createdAt: "2022-01-01",
-  },
-];
-
 export type EventType = {
-  eventID: string;
-  event: string;
-  app: string;
-  invites: string[];
-  createdAt: string;
+  evntid: string;
+  title: string;
+  description: string;
+  url: string;
+  scheduled: string;
+  slug: string;
 };
-
-// "eventID", "event", "app", "message", "invites", "createdAt"
 
 export const columns: ColumnDef<EventType>[] = [
   {
@@ -124,34 +76,32 @@ export const columns: ColumnDef<EventType>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "eventID",
+    accessorKey: "evntid",
     header: "id",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("eventID")}</div>
+      <div className="capitalize">{row.getValue("evntid")}</div>
     ),
   },
   {
-    accessorKey: "event",
-    header: "event",
-    cell: ({ row }) => <div className="lowercase">{row.getValue("event")}</div>,
+    accessorKey: "title",
+    header: "title",
+    cell: ({ row }) => <div className="">{row.getValue("title")}</div>,
   },
   {
     accessorKey: "app",
     header: "app",
-    cell: ({ row }) => <div className="lowercase">{row.getValue("app")}</div>,
+    cell: ({ row }) => <div className="">{row.getValue("app")}</div>,
   },
   {
-    accessorKey: "createdAt",
-    header: "createdAt",
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("createdAt")}</div>
-    ),
+    accessorKey: "scheduled",
+    header: "scheduled",
+    cell: ({ row }) => <div className="">{row.getValue("scheduled")}</div>,
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const task = row.original;
+      const event = row.original;
 
       return (
         <DropdownMenu>
@@ -166,19 +116,19 @@ export const columns: ColumnDef<EventType>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="border-zinc-900 bg-zinc-950"
+            className="border-zinc-900 bg-secondary-secondaryBG"
           >
             <DropdownMenuLabel className="text-white">
               Actions
             </DropdownMenuLabel>
             <DropdownMenuItem
-              className="flex items-center gap-1 text-white focus:bg-zinc-900 focus:text-slate-50"
-              onClick={() => navigator.clipboard.writeText(task.eventID)}
+              className="flex items-center gap-1 text-white focus:bg-primary-hover-primary focus:text-slate-50"
+              onClick={() => navigator.clipboard.writeText(event.evntid)}
             >
               <Copy className="h-4 w-4" /> Copy ID
             </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-zinc-800" />
-            <DropdownMenuItem className="flex items-center gap-1 text-white focus:bg-zinc-900 focus:text-slate-50">
+            <DropdownMenuItem className="flex items-center gap-1 text-white focus:bg-primary-hover-primary focus:text-slate-50">
               <Forward className="h-4 w-4" /> Share Invite
             </DropdownMenuItem>
             <DropdownMenuItem className="flex items-center gap-1 text-[#ee7777] focus:bg-red-700 focus:text-red-200">
@@ -191,7 +141,9 @@ export const columns: ColumnDef<EventType>[] = [
   },
 ];
 
-export function EventTable() {
+export function EventTable({ events }: { events: EventType[] }) {
+  const data: EventType[] = events;
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
@@ -222,10 +174,10 @@ export function EventTable() {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter event..."
-          value={(table.getColumn("event")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter title..."
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("event")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm border-zinc-900 bg-primary-hover-primary text-slate-50 placeholder:text-white focus:ring-offset-indigo-500"
         />
@@ -233,14 +185,14 @@ export function EventTable() {
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="ml-auto border-zinc-900 bg-zinc-950 text-white hover:bg-zinc-900 hover:text-white"
+              className="hover:bg-secondary-hoversecondary ml-auto border border-zinc-900 bg-secondary-secondaryBG text-white hover:border-zinc-700/50 hover:text-white"
             >
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="border-zinc-900 bg-zinc-950"
+            className="border-zinc-900 bg-secondary-secondaryBG"
           >
             {table
               .getAllColumns()
@@ -249,7 +201,7 @@ export function EventTable() {
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className="capitalize text-white focus:bg-zinc-900 focus:text-slate-50"
+                    className="capitalize text-white focus:bg-primary-hover-primary focus:text-slate-50"
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
