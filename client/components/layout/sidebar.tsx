@@ -4,6 +4,9 @@ import {
   LineChart,
   ScrollText,
   CalendarDays,
+  BarChart,
+  Users,
+  Grid,
 } from "lucide-react";
 
 export function Sidebar() {
@@ -22,37 +25,46 @@ export function Sidebar() {
           <li>
             <a
               href="#content"
-              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-white transition-all hover:bg-primary-hover-primary hover:shadow-md"
+              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-neutral-300 transition-all hover:bg-primary-hover-primary hover:text-white hover:shadow-md"
             >
               <LayoutDashboard width={20} height={20} />{" "}
-              <span className="text-sm transition-all">Dashboard</span>
+              <span className="text-sm">Dashboard</span>
             </a>
           </li>
           <li>
             <a
               href="#content"
-              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-white transition-all hover:bg-primary-hover-primary hover:shadow-md"
+              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-neutral-300 transition-all hover:bg-primary-hover-primary hover:text-white hover:shadow-md"
             >
-              <LineChart width={20} height={20} />{" "}
-              <span className="text-sm transition-all">Analytics</span>
+              <BarChart width={20} height={20} />{" "}
+              <span className="text-sm">Insights</span>
             </a>
           </li>
           <li>
             <a
               href="#content"
-              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-white transition-all hover:bg-primary-hover-primary hover:shadow-md"
+              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-neutral-300 transition-all hover:bg-primary-hover-primary hover:text-white hover:shadow-md"
             >
-              <ScrollText width={20} height={20} />
-              <span className="text-sm transition-all">Invoice</span>
+              <Users width={20} height={20} />
+              <span className="text-sm">Teams</span>
             </a>
           </li>
           <li>
             <a
               href="#content"
-              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-white transition-all hover:bg-primary-hover-primary hover:shadow-md"
+              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-neutral-300 transition-all hover:bg-primary-hover-primary hover:text-white hover:shadow-md"
             >
               <CalendarDays width={20} height={20} />
-              <span className="text-sm transition-all">Schedule</span>
+              <span className="text-sm">Bookings</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#content"
+              className="flex items-center gap-1 rounded-md bg-transparent p-2 text-neutral-300 transition-all hover:bg-primary-hover-primary hover:text-white hover:shadow-md"
+            >
+              <Grid width={20} height={20} />
+              <span className="text-sm">Apps</span>
             </a>
           </li>
         </ul>

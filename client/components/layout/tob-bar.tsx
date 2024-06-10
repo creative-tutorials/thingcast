@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import { FormContent } from "@/components/layout/form-content";
 import axios from "axios";
-import { useAuth, useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
+import { useAuth } from "@clerk/nextjs";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Dialog,
@@ -53,9 +54,9 @@ export function TopBar() {
         },
       );
 
-      if (response.status === 200) {
-        return response.data;
-      }
+      if (response.status === 200) return response.data;
+
+      // handle error
     } catch (err: any) {
       console.error(err);
       throw err;
@@ -70,36 +71,35 @@ export function TopBar() {
     },
     onError: (err) => {
       console.error(err);
-      // setError(err);
+      toast.error(err.message, {
+        action: {
+          label: "Close",
+          onClick: () => console.log("Toast closed"),
+        },
+      });
     },
   });
 
-  const sData = {
-    title: formData.title,
-    description: formData.description,
-    app: formData.app,
-    url: formData.url,
-    // instead of using 6/30/2023 we can use Mon, Jun 30, 2023
-    scheduled: `${date?.toDateString()} / ${time}`,
-  };
-
   return (
-    <div id="--top--bar" className="flex items-center gap-5">
+    <div id="--top--bar" className="flex items-center justify-between gap-5">
       <hgroup>
-        <h1 className="text-3xl font-bold text-white">Schedule</h1>
+        <h1 className="text-xl font-bold text-white">Events</h1>
+        <p className="text-sm text-muted-foreground">
+          Create events to share with your teams or viewers
+        </p>
       </hgroup>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="flex items-center gap-1 rounded-full bg-indigo-500 hover:bg-indigo-600">
+          <Button className="flex items-center gap-1 rounded-md bg-indigo-500 hover:bg-indigo-600">
             <CirclePlus className="h-4 w-4" />
-            Create Schedule
+            New Event
           </Button>
         </DialogTrigger>
         <DialogContent className="w-full max-w-lg rounded-2xl border-zinc-900 bg-secondary-secondaryBG">
           <DialogHeader>
-            <DialogTitle className="text-white">Create Schedule</DialogTitle>
+            <DialogTitle className="text-white">Add a new event</DialogTitle>
             <DialogDescription>
-              Enter the details of your schedule and click save.
+              Create a new event to share with your team or viewers.
             </DialogDescription>
           </DialogHeader>
           <div className="flex h-full max-h-[70vh] flex-col gap-5 overflow-y-auto py-4">

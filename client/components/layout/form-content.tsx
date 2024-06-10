@@ -78,6 +78,27 @@ export function FormContent(props: FormContentProps) {
           </div>
         </div>
       </div>
+      <div id="og-invite">
+        <div id="fields" className="flex flex-col gap-4">
+          <Label htmlFor="meeting-link" className="text-white">
+            Invite People
+          </Label>
+          <div id="invite-input" className="flex flex-col gap-2">
+            <Input
+              id="meeting-link"
+              placeholder="zoom.us/join/xxxxxxxxxx"
+              type="text"
+              value={fData.url}
+              onChange={(e) => setFData({ ...fData, url: e.target.value })}
+              className="col-span-3 border-zinc-800 bg-zinc-950 text-white focus:border-indigo-300 focus:ring-offset-indigo-500"
+              autoComplete="off"
+            />
+            <p className="text-sm text-muted-foreground">
+              Add a link to the meeting you want to invite people to.
+            </p>
+          </div>
+        </div>
+      </div>
       <div id="og-description">
         <div id="fields" className="flex flex-col gap-2">
           <Label htmlFor="description" className="text-white">
@@ -124,27 +145,6 @@ export function FormContent(props: FormContentProps) {
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </div>
-        </div>
-      </div>
-      <div id="og-invite">
-        <div id="fields" className="flex flex-col gap-4">
-          <Label htmlFor="meeting-link" className="text-white">
-            Invite People
-          </Label>
-          <div id="invite-input" className="flex flex-col gap-2">
-            <Input
-              id="meeting-link"
-              placeholder="zoom.us/join/xxxxxxxxxx"
-              type="text"
-              value={fData.url}
-              onChange={(e) => setFData({ ...fData, url: e.target.value })}
-              className="col-span-3 border-zinc-800 bg-zinc-950 text-white focus:border-indigo-300 focus:ring-offset-indigo-500"
-              autoComplete="off"
-            />
-            <p className="text-sm text-muted-foreground">
-              Add a link to the meeting you want to invite people to.
-            </p>
           </div>
         </div>
       </div>

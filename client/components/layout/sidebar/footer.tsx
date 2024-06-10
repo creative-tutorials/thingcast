@@ -37,19 +37,18 @@ export function SidebarFooter() {
             >
               <div id="user-avatar">
                 <Image
-                  src={user?.imageUrl as string}
+                  src={(user?.imageUrl as string) || "/vercel.svg"}
                   width={40}
                   height={40}
-                  alt={`${user?.firstName} ${user?.lastName}`}
-                  className="rounded-full"
+                  alt={(user?.username as string) || "Vercel"}
+                  className="h-auto w-auto rounded-full"
                 />
               </div>
 
               <div id="user-name">
                 <p className="text-sm font-bold text-neutral-300">
-                  {user?.username}
+                  {user?.username || "Vercel"}
                 </p>
-                {/* <p className="text-xs">{user?.lastName}</p> */}
               </div>
             </div>
           </DropdownMenuTrigger>
@@ -57,23 +56,23 @@ export function SidebarFooter() {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator className="border border-neutral-800" />
             <DropdownMenuGroup>
-              <DropdownMenuItem className="flex items-center gap-1 focus:bg-primary-hover-primary focus:text-slate-100">
+              <DropdownMenuItem className="flex items-center gap-1 text-neutral-300 focus:bg-primary-hover-primary focus:text-slate-100">
                 <CircleUserRound width={18} height={18} /> Profile
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-1 focus:bg-primary-hover-primary focus:text-slate-100">
+              <DropdownMenuItem className="flex items-center gap-1 text-neutral-300 focus:bg-primary-hover-primary focus:text-slate-100">
                 <Settings width={18} height={18} /> Settings
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-1 focus:bg-primary-hover-primary focus:text-slate-100">
+              <DropdownMenuItem className="flex items-center gap-1 text-neutral-300 focus:bg-primary-hover-primary focus:text-slate-100">
                 <CircleHelp width={18} height={18} /> Help
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-1 focus:bg-primary-hover-primary focus:text-slate-100">
+              <DropdownMenuItem className="flex items-center gap-1 text-neutral-300 focus:bg-primary-hover-primary focus:text-slate-100">
                 <CalendarCheck width={18} height={18} /> Book a call
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator className="border border-neutral-800" />
             <DropdownMenuGroup>
               <DropdownMenuItem
-                className="flex items-center gap-1 focus:bg-primary-hover-primary focus:text-slate-100"
+                className="flex items-center gap-1 text-neutral-300 focus:bg-primary-hover-primary focus:text-slate-100"
                 onClick={() => signOut({ redirectUrl: "/sign-in" })}
               >
                 <LogOut width={18} height={18} /> Sign out
