@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
+import { getAppUrl } from "@/utils/url-utils";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,10 +13,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
-  ArrowUpDown,
   Copy,
-  Forward,
-  Trash2,
   ChevronDown,
   MoreHorizontal,
   Edit2,
@@ -47,13 +45,21 @@ import {
 import { EventType, TableStoreType } from "@/types/event";
 import { deleteMutation } from "@/types/mutations";
 
-export function EventTable(props: {
+type TableProps = {
   events: EventType[];
   mutation: deleteMutation;
   setTableStore: Dispatch<SetStateAction<TableStoreType>>;
   setOpen: Dispatch<SetStateAction<boolean>>;
-}) {
-  const data: EventType[] = props.events;
+  setIsCopyOpen: Dispatch<SetStateAction<boolean>>;
+  setUri: Dispatch<SetStateAction<string>>;
+};
+
+export function EventTable(props: TableProps) {
+  const { events, mutation, setTableStore, setOpen, setIsCopyOpen, setUri } =
+    props;
+  const url = getAppUrl("share");
+
+  const data: EventType[] = events;
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -61,16 +67,6 @@ export function EventTable(props: {
     createdAt: false,
   });
   const [rowSelection, setRowSelection] = useState({});
-
-  const [formData, setFormData] = useState<EventType>({
-    id: "",
-    evntid: "",
-    title: "",
-    description: "",
-    url: "",
-    scheduled: "",
-    slug: "",
-  });
 
   const columns: ColumnDef<EventType>[] = [
     {
@@ -145,7 +141,10 @@ export function EventTable(props: {
               </DropdownMenuLabel> */}
               <DropdownMenuItem
                 className="flex items-center gap-1 text-neutral-300 focus:bg-primary-hover-primary focus:text-slate-50"
-                onClick={() => navigator.clipboard.writeText(event.evntid)}
+                onClick={() => {
+                  setUri(`${url}/${event.slug}`);
+                  setIsCopyOpen(true);
+                }}
               >
                 <Copy className="h-4 w-4" /> Copy link
               </DropdownMenuItem>
@@ -153,23 +152,28 @@ export function EventTable(props: {
               <DropdownMenuItem
                 className="flex items-center gap-1 text-neutral-300 focus:bg-primary-hover-primary focus:text-slate-50"
                 onClick={() => {
-                  props.setTableStore({ id: event.id, evntid: event.evntid });
-                  props.setOpen(true);
+                  setTableStore({ id: event.id, evntid: event.evntid });
+                  setOpen(true);
                 }}
               >
                 <Edit2 className="h-4 w-4" /> Edit
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-1 text-neutral-300 focus:bg-primary-hover-primary focus:text-slate-50">
+              <DropdownMenuItem
+                className="flex items-center gap-1 text-neutral-300 focus:bg-primary-hover-primary focus:text-slate-50"
+                disabled
+              >
                 <Code className="h-4 w-4" /> Embed
               </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-zinc-800" />
               <DropdownMenuItem
+                disabled={mutation.isPending}
                 className="flex items-center gap-1 text-[#ee7777] focus:bg-red-700 focus:text-red-200"
                 onClick={() =>
-                  props.mutation.mutate({ id: event.id, evntid: event.evntid })
+                  mutation.mutate({ id: event.id, evntid: event.evntid })
                 }
               >
-                <Trash className="h-4 w-4" /> Delete
+                <Trash className="h-4 w-4" />{" "}
+                {mutation.isPending ? "Deleting..." : "Delete"}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

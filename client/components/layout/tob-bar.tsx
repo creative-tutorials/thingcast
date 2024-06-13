@@ -18,10 +18,10 @@ import {
 } from "@/components/ui/dialog";
 import { FormSchema } from "@/utils/form_utils";
 import { useState } from "react";
+import { getApiUrl } from "@/utils/url-utils";
 
 export function TopBar() {
-  const { isSignedIn, isLoaded, userId } = useAuth();
-  const [isPending, setIsPending] = useState(false);
+  const { isSignedIn, isLoaded, userId, getToken } = useAuth();
   const [formData, setFormData] = useState<FormSchema>({
     title: "",
     description: "",
@@ -35,20 +35,23 @@ export function TopBar() {
   const createEvent = async () => {
     if (!isSignedIn && !isLoaded) return;
 
-    setIsPending(true);
+    const apiUrl = getApiUrl("events");
+
     try {
+      const token = await getToken();
       const response = await axios.post(
-        "http://localhost:8080/events",
+        `${apiUrl}`,
         {
           title: formData.title,
           description: formData.description,
-          app: formData.app,
+          apk: formData.app,
           url: formData.url,
           scheduled: `${date?.toDateString()} / ${time}`,
         },
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
             userid: userId,
           },
         },
@@ -64,9 +67,8 @@ export function TopBar() {
   };
 
   const mutation = useMutation({
-    mutationFn: () => createEvent(),
+    mutationFn: createEvent,
     onSuccess: () => {
-      setIsPending(false);
       queryClient.invalidateQueries({ queryKey: ["events"] });
     },
     onError: (err) => {

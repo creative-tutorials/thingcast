@@ -31,6 +31,12 @@ export default function RootLayout({
       publishableKey={clerkPublicKey}
       appearance={{
         baseTheme: dark,
+        signIn: {
+          variables: {
+            // colorPrimary: "red",
+            colorBackground: "#09090b",
+          },
+        },
       }}
     >
       <TanStackClient>

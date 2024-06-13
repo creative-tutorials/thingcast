@@ -9,7 +9,6 @@ export type UpdateEventParams = Pick<DeleteEventParams, "id" | "evntid"> & {
   title: string;
   description: string;
   url: string;
-  scheduled: string;
 };
 
 export type deleteMutation = UseMutationResult<

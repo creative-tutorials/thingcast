@@ -69,6 +69,7 @@ export function FormContent(props: FormContentProps) {
           <div id="title-input">
             <Input
               id="title"
+              name="title"
               placeholder="Streaming with Theo"
               value={fData.title}
               onChange={(e) => setFData({ ...fData, title: e.target.value })}
@@ -86,6 +87,7 @@ export function FormContent(props: FormContentProps) {
           <div id="invite-input" className="flex flex-col gap-2">
             <Input
               id="meeting-link"
+              name="meeting-link"
               placeholder="zoom.us/join/xxxxxxxxxx"
               type="text"
               value={fData.url}
@@ -107,6 +109,7 @@ export function FormContent(props: FormContentProps) {
           <div id="description-input" className="flex flex-col gap-2">
             <Textarea
               id="description"
+              name="description"
               placeholder="Tell your audience what you're going to do"
               value={fData.description}
               onChange={(e) =>
@@ -148,7 +151,7 @@ export function FormContent(props: FormContentProps) {
           </div>
         </div>
       </div>
-      <div>
+      <div id="date-time-field">
         <div id="fields" className="flex flex-col gap-4">
           <Label className="text-white">
             Select the time and date for the event

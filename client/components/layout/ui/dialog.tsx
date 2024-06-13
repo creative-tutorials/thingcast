@@ -25,6 +25,8 @@ type DialogProps = {
 };
 
 export function DialogComponent(props: DialogProps) {
+  const { setOpen, isOpen, editMutation, tableStore } = props;
+
   const [formData, setFormData] = useState<EventType>({
     id: "",
     evntid: "",
@@ -36,7 +38,7 @@ export function DialogComponent(props: DialogProps) {
   });
 
   return (
-    <Dialog open={props.isOpen}>
+    <Dialog open={isOpen}>
       <DialogContent className="rounded-lg border-zinc-900 bg-zinc-950 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-white">Edit event</DialogTitle>
@@ -94,7 +96,7 @@ export function DialogComponent(props: DialogProps) {
           </div>
         </div>
         <DialogFooter>
-          <DialogClose asChild onClick={() => props.setOpen(false)}>
+          <DialogClose asChild onClick={() => setOpen(false)}>
             <Button
               variant={"outline"}
               className="border-slate-600 bg-transparent text-white hover:border-slate-400 hover:bg-transparent hover:text-white"
@@ -105,19 +107,18 @@ export function DialogComponent(props: DialogProps) {
           <Button
             type="submit"
             className="bg-primary-tagbackground hover:bg-primary-hover-primary"
-            disabled={props.editMutation.isPending}
+            disabled={editMutation.isPending}
             onClick={() =>
-              props.editMutation.mutate({
-                id: props.tableStore.id,
-                evntid: props.tableStore.evntid,
+              editMutation.mutate({
+                id: tableStore.id,
+                evntid: tableStore.evntid,
                 title: formData.title,
                 description: formData.description,
                 url: formData.url,
-                scheduled: formData.scheduled,
               })
             }
           >
-            {props.editMutation.isPending ? "Please wait..." : "Save Changes"}
+            {editMutation.isPending ? "Please wait..." : "Save Changes"}
           </Button>
         </DialogFooter>
       </DialogContent>

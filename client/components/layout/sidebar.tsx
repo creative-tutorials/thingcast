@@ -24,7 +24,7 @@ export function Sidebar() {
         <ul className="flex flex-col gap-2">
           <li>
             <a
-              href="#content"
+              href="/dashboard"
               className="flex items-center gap-1 rounded-md bg-transparent p-2 text-neutral-300 transition-all hover:bg-primary-hover-primary hover:text-white hover:shadow-md"
             >
               <LayoutDashboard width={20} height={20} />{" "}
@@ -33,7 +33,7 @@ export function Sidebar() {
           </li>
           <li>
             <a
-              href="#content"
+              href="/insights"
               className="flex items-center gap-1 rounded-md bg-transparent p-2 text-neutral-300 transition-all hover:bg-primary-hover-primary hover:text-white hover:shadow-md"
             >
               <BarChart width={20} height={20} />{" "}
@@ -42,7 +42,7 @@ export function Sidebar() {
           </li>
           <li>
             <a
-              href="#content"
+              href="/teams"
               className="flex items-center gap-1 rounded-md bg-transparent p-2 text-neutral-300 transition-all hover:bg-primary-hover-primary hover:text-white hover:shadow-md"
             >
               <Users width={20} height={20} />
@@ -51,7 +51,7 @@ export function Sidebar() {
           </li>
           <li>
             <a
-              href="#content"
+              href="/bookings"
               className="flex items-center gap-1 rounded-md bg-transparent p-2 text-neutral-300 transition-all hover:bg-primary-hover-primary hover:text-white hover:shadow-md"
             >
               <CalendarDays width={20} height={20} />
@@ -60,7 +60,7 @@ export function Sidebar() {
           </li>
           <li>
             <a
-              href="#content"
+              href="/apps"
               className="flex items-center gap-1 rounded-md bg-transparent p-2 text-neutral-300 transition-all hover:bg-primary-hover-primary hover:text-white hover:shadow-md"
             >
               <Grid width={20} height={20} />

@@ -2,10 +2,11 @@
 
 import { useAuth } from "@clerk/nextjs";
 import { EventTable } from "./event-table";
-import { getApiUrl } from "@/utils/apiutils";
+import { getApiUrl } from "@/utils/url-utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { DialogComponent } from "@/components/layout/ui/dialog";
+import { CopyDialog } from "@/components/layout/ui/copy-dialog";
 import axios from "axios";
 import { toast } from "sonner";
 import {
@@ -17,12 +18,15 @@ import {
 import { TableStoreType } from "@/types/event";
 
 export function ClientWrapper() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // For the Edit Event Dialog
+  const [isCopyOpen, setIsCopyOpen] = useState(false); // For the Copy Event Dialog
+  const url = getApiUrl("event");
+  const [uri, setUri] = useState<string>("https://create.t3.gg");
   const [tableStore, setTableStore] = useState<TableStoreType>({
     id: "",
     evntid: "",
   });
-  const { isSignedIn, isLoaded, userId } = useAuth();
+  const { isSignedIn, isLoaded, userId, getToken } = useAuth();
   const queryClient = useQueryClient();
   const { isPending, isError, error, data } = useQuery({
     queryKey: ["events"],
@@ -33,9 +37,11 @@ export function ClientWrapper() {
     if (!isSignedIn && !isLoaded) return;
 
     try {
-      const response = await axios.get("http://localhost:8080/event", {
+      const token = await getToken();
+      const response = await axios.get(url, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
           userid: userId,
         },
       });
@@ -55,11 +61,12 @@ export function ClientWrapper() {
   }: DeleteEventParams): Promise<any> => {
     if (!isSignedIn || !isLoaded) return;
 
-    const url = getApiUrl("event");
     try {
+      const token = await getToken();
       const response = await axios.delete(`${url}/${id}/${evntid}`, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
           userid: userId,
         },
       });
@@ -95,23 +102,23 @@ export function ClientWrapper() {
     title,
     description,
     url,
-    scheduled,
   }: UpdateEventParams) => {
     if (!isSignedIn || !isLoaded) return;
 
     const apiUrl = getApiUrl("event");
     try {
+      const token = await getToken();
       const response = await axios.put(
         `${apiUrl}/${id}/${evntid}`,
         {
           title,
           description,
           url,
-          scheduled,
         },
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
             userid: userId,
           },
         },
@@ -167,6 +174,8 @@ export function ClientWrapper() {
           mutation={mutation}
           setTableStore={setTableStore}
           setOpen={setIsOpen}
+          setIsCopyOpen={setIsCopyOpen}
+          setUri={setUri}
         />
       )}
 
@@ -177,6 +186,8 @@ export function ClientWrapper() {
         editMutation={editMutation}
         tableStore={tableStore}
       />
+      {/* ------- COPY EVENT DIALOG ------- */}
+      <CopyDialog setOpen={setIsCopyOpen} isOpen={isCopyOpen} uri={uri} />
     </div>
   );
 }
