@@ -57,7 +57,7 @@ type TableProps = {
 export function EventTable(props: TableProps) {
   const { events, mutation, setTableStore, setOpen, setIsCopyOpen, setUri } =
     props;
-  const url = getAppUrl("share");
+  const url = getAppUrl("invite");
 
   const data: EventType[] = events;
 

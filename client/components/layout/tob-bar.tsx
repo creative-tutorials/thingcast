@@ -46,7 +46,8 @@ export function TopBar() {
           description: formData.description,
           apk: formData.app,
           url: formData.url,
-          scheduled: `${date?.toDateString()} / ${time}`,
+          date: date?.toDateString(),
+          time: time,
         },
         {
           headers: {
