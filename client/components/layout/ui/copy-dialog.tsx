@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { Copy, Check } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,15 +13,16 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { dialogControlType, uriControlType } from "@/types/control";
 
 type CopyDialogProps = {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  isOpen: boolean;
-  uri: string;
+  dialogs: dialogControlType;
+  setDialogs: Dispatch<SetStateAction<dialogControlType>>;
+  uri: uriControlType;
 };
 
 export function CopyDialog(props: CopyDialogProps) {
-  const { setOpen, isOpen, uri } = props;
+  const { dialogs, setDialogs, uri } = props;
   const [isCopied, setIsCopied] = useState(false);
 
   const copyLink = async () => {
@@ -47,7 +47,7 @@ export function CopyDialog(props: CopyDialogProps) {
   };
 
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={dialogs.isCopyOpen}>
       <DialogContent className="rounded-lg border-zinc-900 bg-zinc-950 sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-white">Share link</DialogTitle>
@@ -84,7 +84,10 @@ export function CopyDialog(props: CopyDialogProps) {
           </Button>
         </div>
         <DialogFooter className="sm:justify-start">
-          <DialogClose asChild onClick={() => setOpen(false)}>
+          <DialogClose
+            asChild
+            onClick={() => setDialogs({ ...dialogs, isCopyOpen: false })}
+          >
             <Button
               type="button"
               variant="outline"

@@ -1,4 +1,4 @@
-import { Sidebar } from "@/components/layout/sidebar";
+import { Sidebar } from "@/components/layout/sidebar/sidebar";
 import { Content } from "@/components/layout/content";
 
 export default function Home() {

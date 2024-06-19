@@ -6,34 +6,10 @@ import { CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { getApiUrl } from "@/utils/url-utils";
-import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import axios from "axios";
-
-// app
-// :
-// "Twitch"
-// description
-// :
-// "A quick coffee chat with t3dotgg"
-// host
-// :
-// "timidev"
-// id
-// :
-// "rec_cpjgiu55hs80ufmb2bn0"
-// scheduled
-// :
-// "Tue Jun 11 2024 / 20:00"
-// slug
-// :
-// "talk-pfeu1uie8tiz8qyz5e28tp"
-// title
-// :
-// "Coffee chat with Theo"
-// url
-// :
-// "twitch.tv/theo"
+import { LoadingSkeleton } from "./skeleton";
 
 type Invite = {
   id: string;
@@ -48,6 +24,7 @@ type Invite = {
 };
 
 export function InviteBox({ slug }: { slug: string }) {
+  const router = useRouter();
   const { isPending, isError, error, data } = useQuery<Invite>({
     queryKey: ["invite"],
     queryFn: () => getInvitation(),
@@ -78,7 +55,7 @@ export function InviteBox({ slug }: { slug: string }) {
   };
 
   if (isPending) {
-    return <div className="text-muted-foreground">Loading...</div>;
+    return <LoadingSkeleton />;
   }
 
   if (isError) {
@@ -164,7 +141,10 @@ export function InviteBox({ slug }: { slug: string }) {
             </p>
           </hgroup>
           <div id="btn-wrapper">
-            <Button className="w-full rounded-lg bg-white text-lg text-black hover:bg-slate-100">
+            <Button
+              className="w-full rounded-lg bg-white text-lg text-black hover:bg-slate-100"
+              onClick={() => router.replace(`${data.url}`)}
+            >
               Register
             </Button>
           </div>

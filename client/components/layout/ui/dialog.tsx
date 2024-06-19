@@ -1,4 +1,10 @@
 import { Dispatch, SetStateAction, useState } from "react";
+import { useAuth } from "@clerk/nextjs";
+import { getApiUrl } from "@/utils/url-utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { toast } from "sonner";
+import { UpdateEventParams, updateMutatuion } from "@/types/mutations";
 import { EventType, TableStoreType } from "@/types/event";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,20 +18,19 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Edit2 } from "lucide-react";
-import { updateMutatuion } from "@/types/mutations";
+import { dialogControlType } from "@/types/control";
 
 type DialogProps = {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  isOpen: boolean;
-  editMutation: updateMutatuion;
-  tableStore: TableStoreType;
+  dialogs: dialogControlType;
+  setDialogs: Dispatch<SetStateAction<dialogControlType>>;
+  formD: TableStoreType;
 };
 
 export function DialogComponent(props: DialogProps) {
-  const { setOpen, isOpen, editMutation, tableStore } = props;
+  const { dialogs, setDialogs, formD } = props;
+  const { isSignedIn, isLoaded, userId, getToken } = useAuth();
+  const queryClient = useQueryClient();
 
   const [formData, setFormData] = useState<EventType>({
     id: "",
@@ -37,8 +42,67 @@ export function DialogComponent(props: DialogProps) {
     slug: "",
   });
 
+  const updateEvent = async ({
+    id,
+    evntid,
+    title,
+    description,
+    url,
+  }: UpdateEventParams) => {
+    if (!isSignedIn || !isLoaded) return;
+
+    const apiUrl = getApiUrl("event");
+    try {
+      const token = await getToken();
+      const response = await axios.put(
+        `${apiUrl}/${id}/${evntid}`,
+        {
+          title,
+          description,
+          url,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            userid: userId,
+          },
+        },
+      );
+
+      if (response.status === 200) return response.data;
+
+      // handle error
+    } catch (err: any) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+  const editMutation: updateMutatuion = useMutation({
+    mutationFn: updateEvent,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      toast.success("Event updated successfully", {
+        action: {
+          label: "Close",
+          onClick: () => console.log("Toast closed"),
+        },
+      });
+    },
+    onError: (err: any) => {
+      console.error("err", err);
+      toast.error(err.message, {
+        action: {
+          label: "Close",
+          onClick: () => console.log("Toast closed"),
+        },
+      });
+    },
+  });
+
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={dialogs.isOpen}>
       <DialogContent className="rounded-lg border-zinc-900 bg-zinc-950 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-white">Edit event</DialogTitle>
@@ -96,7 +160,10 @@ export function DialogComponent(props: DialogProps) {
           </div>
         </div>
         <DialogFooter>
-          <DialogClose asChild onClick={() => setOpen(false)}>
+          <DialogClose
+            asChild
+            onClick={() => setDialogs({ ...dialogs, isOpen: false })}
+          >
             <Button
               variant={"outline"}
               className="border-slate-600 bg-transparent text-white hover:border-slate-400 hover:bg-transparent hover:text-white"
@@ -110,8 +177,8 @@ export function DialogComponent(props: DialogProps) {
             disabled={editMutation.isPending}
             onClick={() =>
               editMutation.mutate({
-                id: tableStore.id,
-                evntid: tableStore.evntid,
+                id: formD.id,
+                evntid: formD.evntid,
                 title: formData.title,
                 description: formData.description,
                 url: formData.url,
