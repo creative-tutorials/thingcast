@@ -3,7 +3,7 @@ export function getApiUrl(path: string) {
     return `http://localhost:8080/${path}`;
   }
 
-  return `https://api-thingcast.vercel.app/${path}`; // replace with your API URL
+  return `https://api-thingcast.zeabur.app/${path}`; // replace with your API URL
 }
 export function getAppUrl(path: string) {
   if (process.env.NODE_ENV === "development") {
