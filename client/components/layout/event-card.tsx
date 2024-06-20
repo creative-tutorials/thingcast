@@ -76,10 +76,9 @@ export function EventCard(props: CardProp) {
         },
       });
 
-      if (response.status === 200) {
-        console.log(response.data);
-        return response.data;
-      }
+      if (response.status === 200) return response.data;
+
+      // handle error
     } catch (err: any) {
       console.error(err);
       throw err;
@@ -164,8 +163,8 @@ export function EventCard(props: CardProp) {
                   <h3 className="text-sm text-indigo-300">{date}</h3>
                 </hgroup>
               </div>
-              {groupedEvents[date].map((event: eventProp) => (
-                <ContextMenu>
+              {groupedEvents[date].map((event: eventProp, index) => (
+                <ContextMenu key={index}>
                   <ContextMenuTrigger className="">
                     <div
                       id="card"

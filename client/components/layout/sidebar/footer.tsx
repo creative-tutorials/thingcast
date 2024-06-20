@@ -1,10 +1,8 @@
 "use client";
 
 import { useUser, useAuth } from "@clerk/nextjs";
-import Link from "next/link";
-import Image from "next/image";
-import { useClerk, SignInButton } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
+import Avvvatars from "avvvatars-react";
+import { useClerk } from "@clerk/nextjs";
 import {
   LogOut,
   CircleUserRound,
@@ -36,18 +34,17 @@ export function SidebarFooter() {
               className="flex items-center gap-2 rounded-md border border-zinc-900 bg-secondary-secondaryBG p-2"
             >
               <div id="user-avatar">
-                <Image
-                  src={(user?.imageUrl as string) || "/vercel.svg"}
-                  width={40}
-                  height={40}
-                  alt={(user?.username as string) || "Vercel"}
-                  className="h-auto w-auto rounded-full"
+                <Avvvatars
+                  value={
+                    (user?.emailAddresses[0].emailAddress as string) ||
+                    "lee@vercel.com"
+                  }
                 />
               </div>
 
               <div id="user-name">
                 <p className="text-sm font-bold text-neutral-300">
-                  {user?.username || "Vercel"}
+                  {user?.username || "leerob"}
                 </p>
               </div>
             </div>
@@ -78,7 +75,6 @@ export function SidebarFooter() {
                 <LogOut width={18} height={18} /> Sign out
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            {/* <DropdownMenuLabel>Sign out</DropdownMenuLabel> */}
           </DropdownMenuContent>
         </DropdownMenu>
       )}
