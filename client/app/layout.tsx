@@ -17,6 +17,18 @@ export const metadata: Metadata = {
     shortcut: "/thingcast.png",
     apple: "/thingcast.png",
   },
+  openGraph: {
+    url: "https://thingcast.vercel.app",
+    title: "Dashboard | thingcast",
+    description: "Event management dashboard for thingcast",
+    siteName: "thingcast",
+    images: [
+      {
+        url: "https://res.cloudinary.com/derbreilm/image/upload/v1718886395/openg-graph_img_thingcast_zmjn4h.png",
+        alt: "Dashboard | thingcast",
+      },
+    ],
+  },
 };
 
 const clerkPublicKey = env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;

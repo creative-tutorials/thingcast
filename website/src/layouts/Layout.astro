@@ -17,6 +17,35 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/thingcast logo.png" />
     <meta name="generator" content={Astro.generator} />
+    <!-- og image -->
+    <meta property="og:title" content={title} />
+    <meta
+      property="og:description"
+      content="ThingCast is a great way to make sure you are in good hands when creating events."
+    />
+    <meta property="og:url" content="https://thingcast.vercel.app" />
+    <meta property="og:site_name" content="thingcast" />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/derbreilm/image/upload/v1718886395/openg-graph_img_thingcast_zmjn4h.png"
+    />
+    <!-- og alt image -->
+    <meta property="og:image:alt" content="thingCast" />
+    <meta property="og:type" content="website" />
+    <!-- twitter card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta
+      name="twitter:description"
+      content="ThingCast is a great way to make sure you are in good hand when creating events."
+    />
+    <meta
+      name="twitter:image"
+      content="https://res.cloudinary.com/derbreilm/image/upload/v1718886395/openg-graph_img_thingcast_zmjn4h.png"
+    />
+    <!-- twitter alt image -->
+    <meta name="twitter:image:alt" content="thingCast" />
+    <meta name="twitter:url" content="https://thingcast.vercel.app" />
     <title>{title}</title>
   </head>
   <body>
