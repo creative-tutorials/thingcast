@@ -5,7 +5,7 @@ export function Header() {
   return (
     <div
       id="header"
-      className="fixed left-0 top-0 flex h-20 w-full items-center justify-between p-4 px-20"
+      className="fixed left-0 top-0 flex h-20 w-full items-center justify-between border-b border-zinc-800 bg-primary-primaryBG/80 p-4 backdrop-blur-md md:px-20 lg:px-20"
     >
       <div id="--app--logo">
         <Link href="/">

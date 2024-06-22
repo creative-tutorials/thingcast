@@ -147,7 +147,7 @@ export function EventCard(props: CardProp) {
   return (
     <div id="event-card">
       {isError && (
-        <div className="mt-5 w-fit rounded-lg border border-red-900 bg-red-950 p-2 text-red-300">
+        <div className="mt-20 w-fit rounded-lg border border-red-900 bg-red-950 p-2 text-sm text-red-300 md:mt-5 md:text-base lg:mt-5 lg:text-base">
           Error: {error.message}
         </div>
       )}

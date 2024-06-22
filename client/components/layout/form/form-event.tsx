@@ -118,7 +118,7 @@ export function FormEvent() {
             setTime={setTime}
           />
         </div>
-        <DialogFooter>
+        <DialogFooter className="flex flex-col gap-4 md:block md:flex-row lg:block lg:flex-row">
           <DialogClose asChild>
             <Button
               variant={"outline"}

@@ -6,7 +6,11 @@ import { LoadingSkeleton } from "./ui/skeleton";
 
 export function Content() {
   return (
-    <div id="content" className="w-full p-4">
+    <div
+      id="content"
+      data-state="closed"
+      className="pointer-events-auto w-full select-auto p-4 data-[state=open]:pointer-events-none data-[state=open]:select-none"
+    >
       {/* ------- TOP BAR ------- */}
       <TopBar />
       {/* ------- SERVER WRAPPER ------- */}

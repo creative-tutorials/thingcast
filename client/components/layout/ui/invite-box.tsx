@@ -60,14 +60,17 @@ export function InviteBox({ slug }: { slug: string }) {
 
   if (isError) {
     return (
-      <div className="mt-5 w-fit rounded-lg border border-red-900 bg-red-950 p-2 text-red-300">
+      <div className="mt-20 w-fit rounded-lg border border-red-900 bg-red-950 p-2 text-sm text-red-300 md:mt-5 md:text-base lg:mt-5 lg:text-base">
         Error: {error.message}
       </div>
     );
   }
 
   return (
-    <div id="invite-box" className="my-8 flex items-start gap-8">
+    <div
+      id="invite-box"
+      className="my-20 flex flex-col items-start gap-8 md:my-8 md:flex-row lg:my-8 lg:flex-row"
+    >
       <div id="left-col" className="flex flex-col gap-6">
         <div id="image-canvas">
           <Image
@@ -82,7 +85,10 @@ export function InviteBox({ slug }: { slug: string }) {
           <h4 className="text-sm font-medium text-neutral-300">Hosted by</h4>
           <Separator className="my-4 border border-zinc-800" />
           <div id="event-host">
-            <p id="event-host-name" className="text-lg font-medium text-white">
+            <p
+              id="event-host-name"
+              className="text-base font-normal text-white md:text-lg md:font-medium lg:text-lg lg:font-medium"
+            >
               {data.host ?? "Annoymous User"}
             </p>
           </div>
@@ -90,7 +96,7 @@ export function InviteBox({ slug }: { slug: string }) {
       </div>
       <div id="right-col" className="flex w-full flex-col gap-4">
         <hgroup>
-          <h1 className="text-3xl font-semibold text-white">
+          <h1 className="text-2xl font-semibold text-white md:text-3xl lg:text-3xl">
             {data.title ?? "ThingCast Demo v1"}
           </h1>
         </hgroup>
@@ -103,7 +109,7 @@ export function InviteBox({ slug }: { slug: string }) {
               <CalendarDays className="h-5 w-5 text-neutral-400" />
             </div>
             <hgroup id="date-time-context">
-              <h3 className="text-base font-medium text-white">
+              <h3 className="text-sm font-medium text-white md:text-base lg:text-base">
                 {data.date ?? "Monday, June 10"}
               </h3>
               <p className="text-sm font-medium text-neutral-300">
@@ -118,7 +124,10 @@ export function InviteBox({ slug }: { slug: string }) {
             >
               {apps.find((app) => app.id === data.app.toLowerCase())?.icon}
             </div>
-            <div id="app-title" className="text-lg font-medium text-white">
+            <div
+              id="app-title"
+              className="text-base font-medium text-white md:text-lg lg:text-lg"
+            >
               {apps.find((app) => app.id === data.app.toLowerCase())?.text}
             </div>
           </div>

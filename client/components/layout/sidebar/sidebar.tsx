@@ -13,7 +13,7 @@ export function Sidebar() {
   return (
     <div
       id="sidebar"
-      className="pointer-events-auto fixed left-0 top-0 z-50 flex h-screen w-full max-w-60 flex-col gap-5 border-r border-neutral-800 bg-primary-primaryBG p-4 opacity-100 transition-all data-[state=closed]:pointer-events-none data-[state=closed]:opacity-0"
+      className="pointer-events-auto fixed left-0 top-0 z-50 flex h-full w-full max-w-60 flex-col gap-5 border-r border-neutral-800 bg-primary-primaryBG p-4 opacity-100 transition-all data-[state=closed]:pointer-events-none data-[state=closed]:-left-full data-[state=closed]:opacity-0 md:h-screen lg:h-screen"
       data-state="closed"
     >
       <AppLogo />

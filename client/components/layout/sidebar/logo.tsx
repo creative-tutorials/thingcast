@@ -5,8 +5,10 @@ import { Menu } from "lucide-react";
 export function AppLogo() {
   const closeSidebar = () => {
     const sidebar = document.getElementById("sidebar");
-    if (sidebar) {
+    const content = document.getElementById("content");
+    if (sidebar && content) {
       sidebar.setAttribute("data-state", "closed"); // close sidebar
+      content.setAttribute("data-state", "closed"); // close heading group
     }
   };
 
